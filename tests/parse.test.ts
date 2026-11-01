@@ -73,6 +73,7 @@ describe("dates", () => {
     expect(isoDate(parseDate("2026-10-05 14:32")!)).toBe("2026-10-05");
     expect(isoDate(parseDate("05/10/26")!)).toBe("2026-10-05");
     expect(isoDate(parseDate("10/05/2026", "mdy")!)).toBe("2026-10-05");
+    expect(isoDate(parseDate("03.08.2026", "mdy")!)).toBe("2026-08-03");
     expect(isoDate(parseDate("5 Eki 2026")!)).toBe("2026-10-05");
     expect(isoDate(parseDate("05 Ağustos 2026")!)).toBe("2026-08-05");
     expect(isoDate(parseDate("Oct 5, 2026")!)).toBe("2026-10-05");
@@ -84,6 +85,7 @@ describe("dates", () => {
     expect(inferDateOrder(["10/05/2026", "10/28/2026"], "dmy")).toBe("mdy");
     expect(inferDateOrder(["28/10/2026", "05/10/2026"], "mdy")).toBe("dmy");
     expect(inferDateOrder(["01/02/2026"], "mdy")).toBe("mdy");
+    expect(inferDateOrder(["03.08.2026", "03.09.2026"], "mdy")).toBe("dmy");
   });
 
   it("adds months without overflowing short months", () => {

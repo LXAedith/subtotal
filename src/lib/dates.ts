@@ -20,7 +20,8 @@ const MONTHS: Record<string, number> = {
 };
 
 const ISO = /^(\d{4})[-./](\d{1,2})[-./](\d{1,2})(?=$|[\sT])/;
-const NUMERIC = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4}|\d{2})(?=$|[\sT])/;
+// The separator is captured: dotted dates (05.10.2026) are always day first, slashes depend on the country.
+const NUMERIC = /^(\d{1,2})([./-])(\d{1,2})\2(\d{4}|\d{2})(?=$|[\sT])/;
 const DAY_NAME = /^(\d{1,2})[\s./-]+([a-z]{3,9})\.?[\s./,-]+(\d{4})(?=$|\s)/;
 const NAME_DAY = /^([a-z]{3,9})\.?\s+(\d{1,2}),?\s+(\d{4})(?=$|\s)/;
 
@@ -32,8 +33,8 @@ export function matchDate(raw: string, order: DateOrder = "dmy"): { time: number
   if (m) return build(+m[1], +m[2], +m[3], m[0].length + offset);
   m = NUMERIC.exec(text);
   if (m) {
-    const year = m[3].length === 2 ? 2000 + +m[3] : +m[3];
-    let [day, month] = order === "dmy" ? [+m[1], +m[2]] : [+m[2], +m[1]];
+    const year = m[4].length === 2 ? 2000 + +m[4] : +m[4];
+    let [day, month] = order === "dmy" || m[2] === "." ? [+m[1], +m[3]] : [+m[3], +m[1]];
     if (month > 12 && day <= 12) [day, month] = [month, day];
     return build(year, month, day, m[0].length + offset);
   }
@@ -62,8 +63,8 @@ export function inferDateOrder(values: string[], fallback: DateOrder): DateOrder
   for (const value of values) {
     const m = NUMERIC.exec(fold(value.trim()));
     if (!m) continue;
-    if (+m[1] > 12) dmy++;
-    else if (+m[2] > 12) mdy++;
+    if (+m[1] > 12 || m[2] === ".") dmy++;
+    else if (+m[3] > 12) mdy++;
   }
   if (dmy > mdy) return "dmy";
   if (mdy > dmy) return "mdy";
