@@ -1,0 +1,42 @@
+{
+  "name": "subtotal",
+  "version": "1.0.0",
+  "description": "Find every subscription and price hike in your bank statement. Runs in your browser, nothing is uploaded.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json"
+  },
+  "dependencies": {
+    "pdfjs-dist": "~6.4.299",
+    "xlsx": "file:vendor/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LXAedith/subtotal.git"
+  },
+  "keywords": [
+    "subscriptions",
+    "bank-statement",
+    "personal-finance",
+    "privacy",
+    "offline",
+    "pwa",
+    "csv",
+    "browser"
+  ]
+}

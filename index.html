@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Subtotal — find every subscription in your bank statement</title>
+    <meta
+      name="description"
+      content="Find forgotten subscriptions and price rises in your bank or credit card statement (Excel, CSV or PDF). See what they cost a year. Runs in your browser, nothing is uploaded. Türkçe: ekstrendeki abonelikleri ve zamları bul."
+    />
+    <meta name="theme-color" content="#0f766e" />
+    <link rel="canonical" href="https://lxaedith.github.io/subtotal/" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lxaedith.github.io/subtotal/" />
+    <meta property="og:title" content="Subtotal — find every subscription in your bank statement" />
+    <meta
+      property="og:description"
+      content="Drop your statement, see every subscription, every price rise and the yearly total. Nothing is uploaded."
+    />
+    <meta property="og:image" content="https://lxaedith.github.io/subtotal/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Subtotal — find every subscription in your bank statement" />
+    <meta name="twitter:description" content="Every subscription, every price rise, the yearly total. Your statement never leaves your device." />
+    <meta name="twitter:image" content="https://lxaedith.github.io/subtotal/og-image.png" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./">
+        <img src="./icon.svg" alt="" width="32" height="32" />
+        <span>Subtotal</span>
+      </a>
+      <nav class="topnav">
+        <button id="install" class="ghost" type="button" hidden></button>
+        <button id="lang" class="ghost" type="button">Türkçe</button>
+        <a id="repo" class="ghost" href="https://github.com/LXAedith/subtotal" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="hero">
+        <p class="eyebrow" data-i18n="eyebrow">Subscription finder · private by design</p>
+        <h1 data-i18n="hero_title">Find every subscription hiding in your statement</h1>
+        <p class="tagline" data-i18n="hero_tagline">
+          Drop your bank or credit card statement. See every subscription, every price rise and what they cost you a year, in seconds. Your statement never leaves this device.
+        </p>
+        <ul class="badges">
+          <li data-icon="lock" data-i18n="badge_private">Statement stays on your device</li>
+          <li data-icon="bank" data-i18n="badge_banks">Works with any bank</li>
+          <li data-icon="code" data-i18n="badge_free">Free &amp; open source · no sign-up</li>
+        </ul>
+      </section>
+
+      <section class="start" id="start">
+        <label class="drop" id="drop">
+          <input id="file-input" type="file" multiple accept=".csv,.tsv,.txt,.xls,.xlsx,.ods,.pdf,.htm,.html,text/csv,application/pdf" />
+          <span class="drop-icon" data-icon="upload"></span>
+          <strong data-i18n="drop_title">Drop your statement here</strong>
+          <span class="drop-hint" data-i18n="drop_hint">or click to choose · Excel, CSV or PDF · several months at once is best</span>
+        </label>
+        <div class="start-actions">
+          <button id="sample" class="secondary" type="button" data-icon="sparkle" data-i18n="sample">Try a sample statement</button>
+          <button id="paste-toggle" class="ghost" type="button" data-icon="paste" data-i18n="paste_toggle" aria-expanded="false" aria-controls="paste-box">
+            Paste from online banking
+          </button>
+        </div>
+        <div class="paste-box" id="paste-box" hidden>
+          <label for="paste" data-i18n="paste_label">Copy the transaction list from your bank's website and paste it here</label>
+          <textarea id="paste" rows="6" spellcheck="false"></textarea>
+          <button id="paste-go" class="primary" type="button" data-i18n="paste_go">Find subscriptions</button>
+        </div>
+        <details class="howto">
+          <summary data-i18n="howto_title">How do I get my statement?</summary>
+          <ol>
+            <li data-i18n="howto_1">Log in to your bank's website or app and open the account or card you pay subscriptions with.</li>
+            <li data-i18n="howto_2">Find the transaction list ("transactions", "statement" or "account activity") and pick the last 3 to 12 months.</li>
+            <li data-i18n="howto_3">Download it as Excel or CSV, or use the PDF statement your bank emails you. Drop all the files here together.</li>
+          </ol>
+          <p class="tip" data-i18n="howto_tip">More months find more: a monthly charge needs to appear at least twice, a yearly one needs a year.</p>
+        </details>
+      </section>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+      <section class="results" id="results" hidden></section>
+
+      <section class="explain" id="explain">
+        <h2 data-i18n="how_title">How it works</h2>
+        <div class="steps">
+          <article>
+            <h3 data-i18n="how_1_t">1. Drop your statement</h3>
+            <p data-i18n="how_1">
+              Excel, CSV or PDF from any bank or card, in any language. Subtotal finds the date, description and amount columns itself, and reads several months at once.
+            </p>
+          </article>
+          <article>
+            <h3 data-i18n="how_2_t">2. It finds what repeats</h3>
+            <p data-i18n="how_2">
+              Payments to the same company on a weekly, monthly or yearly rhythm, with a steady amount, are subscriptions. 60+ services like Netflix, Spotify or iCloud are recognised from a single charge.
+            </p>
+          </article>
+          <article>
+            <h3 data-i18n="how_3_t">3. Decide and set reminders</h3>
+            <p data-i18n="how_3">
+              See the yearly total, price rises and new trials that turned paid. Mark what to cancel and add renewal reminders to your own calendar.
+            </p>
+          </article>
+        </div>
+
+        <div class="privacy">
+          <h2 data-icon="lock" data-i18n="privacy_title">Your statement never leaves this device</h2>
+          <ul>
+            <li data-i18n="privacy_1">No server: the file is read by JavaScript in this browser tab.</li>
+            <li data-i18n="privacy_2">A strict Content Security Policy stops this page from sending data anywhere. You can check it in your browser's developer tools.</li>
+            <li data-i18n="privacy_3">No bank login, no account, no tracking, no ads. Works offline after the first visit.</li>
+          </ul>
+        </div>
+
+        <h2 data-i18n="faq_title">Questions</h2>
+        <div class="faq">
+          <details>
+            <summary data-i18n="faq_1_q">Why not just look at my bank app?</summary>
+            <p data-i18n="faq_1_a">
+              Bank apps list every payment, but they don't group them, spot that Netflix went up 37 % or add up what all your subscriptions cost in a year. Subtotal does, across several cards and banks at once.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="faq_2_q">Is it safe to open my statement here?</summary>
+            <p data-i18n="faq_2_a">
+              Yes. Nothing is uploaded: the page has no server to upload to, and the browser blocks it from sending data. The code is open source on GitHub.
+            </p>
+          </details>
+          <details>
+            <summary data-i18n="faq_3_q">It missed a subscription. Why?</summary>
+            <p data-i18n="faq_3_a">
+              A monthly charge has to appear at least twice, and a yearly one needs statements a year apart. Add more months. Charges billed through the App Store or Google Play show up as Apple or Google.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p data-icon="lock" data-i18n="footer_privacy">
+        Everything happens in your browser. A strict Content Security Policy blocks this page from sending your statement anywhere: check it in your browser's developer tools, or turn off Wi-Fi and keep going.
+      </p>
+      <p class="footer-links">
+        <a id="repo-footer" href="https://github.com/LXAedith/subtotal" target="_blank" rel="noopener noreferrer" data-i18n="footer_source">Source code on GitHub</a>
+        <span aria-hidden="true">·</span>
+        <span data-i18n="footer_license">MIT licensed</span>
+      </p>
+    </footer>
+
+    <dialog id="password-dialog" aria-labelledby="password-title">
+      <form id="password-form">
+        <h2 id="password-title" data-i18n="password_title">This PDF is locked</h2>
+        <p id="password-name" class="dialog-file"></p>
+        <p data-i18n="password_text"></p>
+        <label for="password-input" data-i18n="password_label">PDF password</label>
+        <input id="password-input" type="password" autocomplete="off" required />
+        <div class="dialog-actions">
+          <button type="button" class="ghost" id="password-cancel" data-i18n="cancel">Cancel</button>
+          <button type="submit" class="primary" data-i18n="password_open">Open</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="columns-dialog" aria-labelledby="columns-title">
+      <form id="columns-form">
+        <h2 id="columns-title" data-i18n="columns_title">Which columns are which?</h2>
+        <p id="columns-text"></p>
+        <div class="preview" id="columns-preview"></div>
+        <div class="column-picks">
+          <label><span data-i18n="col_date">Date</span><select id="col-date"></select></label>
+          <label><span data-i18n="col_text">Description</span><select id="col-text"></select></label>
+          <label><span data-i18n="col_amount">Amount</span><select id="col-amount"></select></label>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="ghost" id="columns-cancel" data-i18n="cancel">Cancel</button>
+          <button type="submit" class="primary" data-i18n="col_use">Use these columns</button>
+        </div>
+      </form>
+    </dialog>
+
+    <noscript><p class="noscript">Subtotal runs entirely in your browser and needs JavaScript to read your statement.</p></noscript>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
